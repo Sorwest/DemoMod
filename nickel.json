@@ -1,0 +1,6 @@
+{
+  "UniqueName": "AuthorName.DemoMod",
+  "Version": "1.0.0",
+  "RequiredApiVersion": "0.1.0",
+  "EntryPointAssembly": "DemoMod.dll"
+}

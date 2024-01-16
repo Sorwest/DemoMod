@@ -1,0 +1,21 @@
+DEMO MOD FAQ
+
+1.	Q: Where is the .dll file? I copy-pasted this folder into ModLibrary but the mod doesn't work.
+	A: This is intended. The mod does not come compiled.
+
+2.	Q: Then what is this for?
+	A: By distributing the source code we hope that modders will use its structure as a template for their projects.
+
+3.	Q: Why do you recommend Visual Studio Community? I've heard Visual Studio Code can compile C# too.
+	A: Yes, as we noted in the README, there are many IDEs and compilers out there, and with some work VS Code can be just as powerful as VS.
+		We recommend VSC for the following reasons:
+		- For modding purposes, VSC is a free tool with no trial period or fees. (Much like VS Code, that is also true)
+		- The IDE comes with compiling capabilities right out the gate. (For VS Code, the user will need to do some work to get it to compile. This is a complex process and new modders can avoid it by using an IDE)
+
+4.	Q: I downloaded this to start modding but the project doesn't have a thing called 'Nickel'. Where do I get that?
+	A: Nickel is a mod loader for Cobalt Core that helps players and modders utilize and create mods with ease. You can get it from https://github.com/Shockah/Nickel/releases
+		It's recommended to place the downloaded folder in the same folder as the game files.
+
+5.	Q: Why does the README use emoji, that is increadibly unprofessional.
+	A: The README is both the cover of the project and another part of it. By providing some basic structure to the README such as images, colors, emoji and heading, modders can utilize and tinker with it more
+		easily, and have a bit more of an idea of what they can do.

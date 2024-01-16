@@ -1,0 +1,37 @@
+{
+  "character": {
+    "DemoCharacter": {
+      "name": "DemoCharacter",
+      "description": "<c=cd6a00>DEMOCHARACTER</c>\nThis is a demo character. <c=boldPink>Am I cool or am I cool?</c>"
+    }
+  },
+  "artifact": {
+    "BookOfTails": {
+      "name": "BOOK OF TAILS",
+      "description": "At start of turn, add a <c=cardtrait>temp</c> <c=card>Fox Tale</c> to your hand."
+    },
+    "Counting": {
+      "name": "COUNTING",
+      "description": "At start of turn, count sheeps. Once you counted 7 sheep, gain 1 <c=status>ENERGY</c> and restart the counter."
+    }
+  },
+  "ship": {
+    "DemoShip": {
+      "name": "DemoShip",
+      "description": "This is a demo ship.\n <c=boldPink>Isn't this cool?</c>"
+    }
+  },
+  "card": {
+    "FoxTale": {
+      "name": "Fox Tale"
+    },
+    "SheepDream": {
+      "name": "Sheep Dream",
+      "description": {
+        "None": "Attack for set amount = 3. On hit, apply 1 <c=status>BOOST</c>.",
+        "A": "Attack for set amount = 4. On hit, apply 1 <c=status>BOOST</c>.",
+        "B": "Attack for set amount = 5. On hit, apply 2 <c=status>BOOST</c>."
+      }
+    }
+  }
+}
