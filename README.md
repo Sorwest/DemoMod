@@ -14,15 +14,15 @@ This README was made using Louis3797's awesome-readme-template
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [About the project](#star2-about-the-demo-mod)
+- [About the project](#star2-about-the-project)
   * [What is Demo Mod](#books-what-is-demo-mod)
   * [Features](#dart-features)
   * [Screenshots](#camera-screenshots)
-- [Making a mod](#running-getting-started)
+- [Making a mod](#wrench-making-a-mod)
   * [What is Nickel](#question-what-is-nickel)
   * [Prerequisites](#bangbang-prerequisites)
   * [Using Demo Mod as a template](#eyes-using-demo-mod-as-a-template)
-  * [Basic files and folders](#file-folder-basic-files-and-foldes)
+  * [Basic files and folders](#file_folder-basic-files-and-folders)
   * [Tips](#bulb-tips)
 - [Other mods](gem-other-mods)
 
@@ -137,8 +137,8 @@ If you need to manually feed the mod loader path to your project, ìn the same t
 ### :bulb: Tips
 #### Vanilla card count
 
-| CREW MEMBER | # COMMON | # UNCOMMON | # RARE
-|
+| CREW MEMBER | # COMMON | # UNCOMMON | # RARE |
+|-------------|----------|------------|--------|
 | ![#44a5fc](https://via.placeholder.com/10/44a5fc?text=+) DIZZY | 9 | 7 | 5
 | ![#fbbc04](https://via.placeholder.com/10/fbbc04?text=+) RIGGS | 9 | 7 | 5
 | ![#c651f6](https://via.placeholder.com/10/c651f6?text=+) PERI | 12 | 7 | 5
@@ -150,8 +150,8 @@ If you need to manually feed the mod loader path to your project, ìn the same t
 
 #### Vanilla artifact count
 
-| CREW MEMBER | # COMMON | # BOSS
-|
+| CREW MEMBER | # COMMON | # BOSS |
+|-------------|----------|--------|
 | ![#44a5fc](https://via.placeholder.com/10/44a5fc?text=+) DIZZY | 4 | 2
 | ![#fbbc04](https://via.placeholder.com/10/fbbc04?text=+) RIGGS | 3 | 2
 | ![#c651f6](https://via.placeholder.com/10/c651f6?text=+) PERI | 3 | 2
