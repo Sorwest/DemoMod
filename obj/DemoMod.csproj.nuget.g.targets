@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)nickel.modbuildconfig\0.2.0\build\Nickel.ModBuildConfig.targets" Condition="Exists('$(NuGetPackageRoot)nickel.modbuildconfig\0.2.0\build\Nickel.ModBuildConfig.targets')" />
-    <Import Project="$(NuGetPackageRoot)nanoray.extractsinglefileapplicationresourcetask\1.0.0\build\Nanoray.ExtractSingleFileApplicationResourceTask.targets" Condition="Exists('$(NuGetPackageRoot)nanoray.extractsinglefileapplicationresourcetask\1.0.0\build\Nanoray.ExtractSingleFileApplicationResourceTask.targets')" />
-    <Import Project="$(NuGetPackageRoot)maketypespublic\1.0.3\build\MakeTypesPublic.targets" Condition="Exists('$(NuGetPackageRoot)maketypespublic\1.0.3\build\MakeTypesPublic.targets')" />
-  </ImportGroup>
-</Project>
