@@ -17,3 +17,5 @@ packages/**
 **/CobaltCore.dll
 **/obj/**
 **/bin/**
+/bin
+/obj
