@@ -1,9 +1,0 @@
-C:\CobaltCoreModding\DemoMod\bin\Debug\net8.0\DemoMod.deps.json
-C:\CobaltCoreModding\DemoMod\bin\Debug\net8.0\DemoMod.dll
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.csproj.AssemblyReference.cache
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.GeneratedMSBuildEditorConfig.editorconfig
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.AssemblyInfoInputs.cache
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.AssemblyInfo.cs
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.csproj.CoreCompileInputs.cache
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.sourcelink.json
-C:\CobaltCoreModding\DemoMod\obj\Debug\net8.0\DemoMod.dll

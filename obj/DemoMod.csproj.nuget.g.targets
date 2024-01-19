@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)nickel.modbuildconfig\0.4.0\build\Nickel.ModBuildConfig.targets" Condition="Exists('$(NuGetPackageRoot)nickel.modbuildconfig\0.4.0\build\Nickel.ModBuildConfig.targets')" />
-  </ImportGroup>
-</Project>
