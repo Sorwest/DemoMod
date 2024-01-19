@@ -1,12 +1,12 @@
-﻿using Nickel;
+﻿using AuthorName.DemoMod.Artifacts;
+using AuthorName.DemoMod.Cards;
+using HarmonyLib;
+using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
+using Nickel;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using HarmonyLib;
 using System.Linq;
-using AuthorName.DemoMod.Cards;
-using AuthorName.DemoMod.Artifacts;
 
 /* In the Cobalt Core modding community it is common for namespaces to be <Author>.<ModName>
  * This is helpful to know at a glance what mod we're looking at, and who made it */
@@ -23,12 +23,12 @@ public sealed class ModEntry : SimpleMod
     internal ISpriteEntry DemoMod_Character_CardBackground { get; }
     internal ISpriteEntry DemoMod_Character_CardFrame { get; }
     internal ISpriteEntry DemoMod_Character_Panel { get; }
-    internal ISpriteEntry DemoMod_Character_Neutral_0 {  get; }
-    internal ISpriteEntry DemoMod_Character_Neutral_1 {  get; }
-    internal ISpriteEntry DemoMod_Character_Neutral_2 {  get; }
-    internal ISpriteEntry DemoMod_Character_Neutral_3 {  get; }
-    internal ISpriteEntry DemoMod_Character_Neutral_4 {  get; }
-    internal ISpriteEntry DemoMod_Character_Mini_0 {  get; }
+    internal ISpriteEntry DemoMod_Character_Neutral_0 { get; }
+    internal ISpriteEntry DemoMod_Character_Neutral_1 { get; }
+    internal ISpriteEntry DemoMod_Character_Neutral_2 { get; }
+    internal ISpriteEntry DemoMod_Character_Neutral_3 { get; }
+    internal ISpriteEntry DemoMod_Character_Neutral_4 { get; }
+    internal ISpriteEntry DemoMod_Character_Mini_0 { get; }
     internal ISpriteEntry DemoMod_Character_Squint_0 { get; }
     internal ISpriteEntry DemoMod_Character_Squint_1 { get; }
     internal ISpriteEntry DemoMod_Character_Squint_2 { get; }
@@ -45,7 +45,7 @@ public sealed class ModEntry : SimpleMod
      * We recommend having a Starter Cards list, a Common Cards list, an Uncommon Cards list, and a Rare Cards list
      * However you can be more detailed, or you can be more loose, if that's your style */
     internal static IReadOnlyList<Type> DemoCharacter_CommonCard_Types { get; } = [
-        
+
     ];
 
     /* We can use an IEnumerable to combine the lists we made above, and modify it if needed
@@ -140,7 +140,7 @@ public sealed class ModEntry : SimpleMod
 
             /* This is the fancy panel that encapsulates your character while in active combat.
              * It's recommended that it follows the same color scheme as the character and deck, for cohesion */
-            BorderSprite = DemoMod_Character_Panel.Sprite 
+            BorderSprite = DemoMod_Character_Panel.Sprite
         });
 
         /* Let's create some animations, because if you were to boot up this mod from what you have above,

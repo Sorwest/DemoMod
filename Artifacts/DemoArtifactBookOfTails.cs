@@ -1,8 +1,8 @@
-﻿using Nickel;
-using System.Reflection;
+﻿using AuthorName.DemoMod.Cards;
+using Nickel;
 using System.Collections.Generic;
 using System.Linq;
-using AuthorName.DemoMod.Cards;
+using System.Reflection;
 
 namespace AuthorName.DemoMod.Artifacts;
 

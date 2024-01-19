@@ -1,6 +1,6 @@
 ﻿using Nickel;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 
 /* Like other namespaces, this can be named whatever
  * However it's recommended that you follow the structure defined by ModEntry of <AuthorName>.<ModName> or <AuthorName>.<ModName>.Cards*/
