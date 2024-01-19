@@ -13,7 +13,7 @@
 		<ModZipPath>$(MSBuildProjectDirectory)\.release\$(MSBuildProjectName)-$(Version).zip</ModZipPath>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Nickel.ModBuildConfig" Version="0.2.0" />
+		<PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Project Include="Configuration.props.user" Condition="Exists('Configuration.props.user')" />

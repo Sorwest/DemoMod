@@ -131,6 +131,32 @@ If you need to manually feed the mod loader path to your project, ìn the same t
   </PropertyGroup>
 </Project>
 ```
+If you get an error saying Texture2D is missing or want to the 0.4.0-prerelease1 Nickel.ModBuildConfig, delete the contents of the `.csproj` file (NOT THE PROJECT, THE FILE), and copy-paste the following:
+```
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>AuthorName.DemoMod</RootNamespace>
+    <Version>1.0.0</Version>
+    <IsNickelMod>True</IsNickelMod>
+    <IncludedModProjectPaths>i18n;assets</IncludedModProjectPaths>
+    <TargetFramework>net8.0</TargetFramework>
+    <ModZipPath>$(MSBuildProjectDirectory)\.release\$(MSBuildProjectName)-$(Version).zip</ModZipPath>
+    <LangVersion>12.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    <PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0-prerelease1" />
+    <PackageReference Include="Nanoray.ExtractSingleFileApplicationResourceTask" Version="1.0.0" PrivateAssets="All" ExcludeAssets="runtime" />
+    <PackageReference Include="MakeTypesPublic" Version="1.0.3" PrivateAssets="All" ExcludeAssets="runtime" />
+    <None Include="$(MSBuildProjectDirectory)\..\.editorconfig" Link=".editorconfig" />
+    <None Remove="$(MSBuildProjectDirectory)\.release\**" />
+  </ItemGroup>
+</Project>
+```
 
 
 <!-- Tips -->
