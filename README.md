@@ -49,8 +49,8 @@ Demo Mod is a small, simple mod for Cobalt Core with basic features, created so 
 ### :camera: Screenshots
 
 <div align="center"> 
-  <img src="assets/screenshots/newrunoptions.png" alt="screenshot" width="960" height="540" />
-  <img src="assets/screenshots/cardexample.png" alt="screenshot" width="960" height="540" />
+  <img src="assets/screenshots/newrunoptions.png" alt="screenshot" width="auto" height="auto" />
+  <img src="assets/screenshots/cardexample.png" alt="screenshot" width="auto" height="auto" />
 </div>
 
 
@@ -71,6 +71,7 @@ You will want to compile C#, and so it is recommended to use an IDE or similar.
 There are many out there, but if you're new to modding, we recommend [Visual Studio Community](https://visualstudio.microsoft.com/vs/getting-started/).
 _If you want to use VS, then make sure to check the '.NET desktop development' box during installation._
 
+You are expected to know a bit of C#, or, in the case you're just starting, a desire for learning.
 
 <!-- Using Demo Mod as a template-->
 ### :eyes: Using Demo Mod as a template
@@ -82,49 +83,83 @@ You can download this repository and start modding right away.
 `nickel.json` is used by Nickel to identify a mod's .dll file, it contains relevant info such as mod version and potential dependencies.
 Here are some examples:
 ##### Shockah's Dracula mod
-```
+```json
 {
     "UniqueName": "Shockah.Dracula",
-    "Version": "0.1.0",
-    "RequiredApiVersion": "0.1.0",
+    "Version": "1.0.2",
+    "RequiredApiVersion": "0.5.0",
     "EntryPointAssembly": "Dracula.dll",
     "LoadPhase": "AfterDbInit",
     "Dependencies": [
         {
             "UniqueName": "Shockah.Kokoro",
-            "Version": "1.2.1"
+            "Version": "1.3.1"
+        },
+        {
+            "UniqueName": "TheJazMaster.MoreDifficulties",
+            "Version": "1.3.0",
+            "IsRequired": false
         }
     ]
 }
 ```
-##### KBraid's Braid and Eili mod
+##### Arin's Randall mod
+```json
+{
+    "UniqueName": "Arin.Randall",
+    "Version": "0.9.2",
+    "RequiredApiVersion": "0.4.2",
+    "EntryPointAssembly": "RandallMod.dll",
+    "Dependencies": [
+        {
+            "UniqueName": "Shockah.Kokoro",
+            "Version": "1.2.0"
+        },
+        {
+            "UniqueName": "TheJazMaster.MoreDifficulties",
+            "Version": "1.3.0",
+            "IsRequired": false
+        }
+    ],
+    "LoadPhase": "AfterDbInit"
+}
 ```
+##### KBraid's Braid and Eili mod
+```json
 {
   "UniqueName": "KBraid.BraidEili",
-  "Version": "0.2.8",
-  "RequiredApiVersion": "0.1.0",
+  "Version": "0.7.2",
+  "RequiredApiVersion": "0.6.0",
   "EntryPointAssembly": "BraidEili.dll",
   "LoadPhase": "AfterDbInit",
   "Dependencies": [
     {
       "UniqueName": "Shockah.Kokoro",
-      "Version": "1.2.1"
+      "Version": "1.3.1"
     }
   ]
 }
 ```
-##### Arin's Randall mod
-```
+##### Sorwest's DemoMod mod (aka, this one)
+```json
 {
-    "UniqueName": "Arin.Randall",
-    "Version": "0.0.1",
-    "RequiredApiVersion": "0.2.0",
-    "EntryPointAssembly": "RandallMod.dll",
+  "UniqueName": "AuthorName.DemoMod",
+  "Version": "1.3.0",
+  "Author": "Author",
+  "Description": "2 cards, 2 artifacts, 1 ship, 1 status. Use to learn!",
+  "RequiredApiVersion": "0.6.0",
+  "EntryPointAssembly": "DemoMod.dll",
+  "Dependencies": [
+    {
+      "UniqueName": "Shockah.Kokoro",
+      "Version": "1.3.1"
+    }
+  ]
 }
 ```
 `.csproj` encapsulates the project's settings and configuration.
 If you need to manually feed the mod loader path to your project, ìn the same top folder as your `.csproj`, you can create the file `Configuration.props.user` with the following: (And you can modify the path to your modloader location)
-```
+```xml
 <Project>
   <PropertyGroup>
     <ModLoaderPath>/PATH/TO/NICKEL/BINARIES/</ModLoaderPath>
@@ -132,27 +167,27 @@ If you need to manually feed the mod loader path to your project, ìn the same t
 </Project>
 ```
 In case you do anything weird, here's a copy of the original .csproj file contents.
-```
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<RootNamespace>AuthorName.DemoMod</RootNamespace>
-		<Version>1.0.0</Version>
-		<IsNickelMod>True</IsNickelMod>
-		<IncludedModProjectPaths>i18n;assets</IncludedModProjectPaths>
-		<LangVersion>12.0</LangVersion>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
-		<CheckEolTargetFramework>false</CheckEolTargetFramework>
-		<ModZipPath>$(MSBuildProjectDirectory)\.release\$(MSBuildProjectName)-$(Version).zip</ModZipPath>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Project Include="Configuration.props.user" Condition="Exists('Configuration.props.user')" />
-	</ItemGroup>
+  <PropertyGroup>
+    <RootNamespace>AuthorName.DemoMod</RootNamespace>
+    <Version>1.3.0</Version>
+    <IsNickelMod>True</IsNickelMod>
+    <IncludedModProjectPaths>i18n;assets</IncludedModProjectPaths>
+    <LangVersion>12.0</LangVersion>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <ModZipPath>$(MSBuildProjectDirectory)\.release\$(MSBuildProjectName)-$(Version).zip</ModZipPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Nickel.ModBuildConfig" Version="0.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Project Include="Configuration.props.user" Condition="Exists('Configuration.props.user')" />
+  </ItemGroup>
 </Project>
 ```
 
@@ -187,6 +222,6 @@ In case you do anything weird, here's a copy of the original .csproj file conten
 
 <!-- Other mods -->
 ## :gem: Other mods
-- [Shockah's Dracula WIP mod](https://github.com/Shockah/Cobalt-Core-Mods/tree/dev/dracula)
-- [Arin's Randall WIP mod](https://github.com/UnicornArin/CobaltCoreRandall)
-- [KBraid's Braid and Eili WIP mod](https://github.com/KBraid/cobalt-core-mods)
+- [Shockah's Dracula mod](https://github.com/Shockah/Cobalt-Core-Mods/tree/dev/dracula)
+- [Arin's Randall mod](https://github.com/UnicornArin/CobaltCoreRandall)
+- [KBraid's Braid and Eili mod](https://github.com/KBraid/cobalt-core-mods/tree/main/Braid%20and%20Eili)
