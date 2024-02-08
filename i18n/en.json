@@ -12,7 +12,7 @@
     },
     "Counting": {
       "name": "COUNTING",
-      "description": "At start of turn, count sheeps. Once you counted 7 sheep, gain 1 <c=status>ENERGY</c> and restart the counter."
+      "description": "At start of turn, count sheeps. Once you counted 7 sheep, gain 1 <c=status>ENERGY</c> and start counting again."
     }
   },
   "ship": {
@@ -32,6 +32,12 @@
         "A": "Attack for set amount = 4. On hit, apply 1 <c=status>BOOST</c>.",
         "B": "Attack for set amount = 5. On hit, apply 2 <c=status>BOOST</c>."
       }
+    }
+  },
+  "status": {
+    "TempShieldNextTurn": {
+      "name": "Temp Shield Next Turn",
+      "description": "At the start of next turn, gain <c=boldPink>{0}</c> <c=status>TEMP SHIELD</c>."
     }
   }
 }

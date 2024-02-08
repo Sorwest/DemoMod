@@ -1,9 +1,9 @@
-﻿using AuthorName.DemoMod.Artifacts;
-using AuthorName.DemoMod.Cards;
+﻿using Nickel;
 using HarmonyLib;
+using AuthorName.DemoMod.Cards;
+using AuthorName.DemoMod.Artifacts;
 using Microsoft.Extensions.Logging;
 using Nanoray.PluginManager;
-using Nickel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +13,17 @@ using System.Linq;
 namespace AuthorName.DemoMod;
 
 /* ModEntry is the base for our mod. Others like to name it Manifest, and some like to name it <ModName>
- * Notice the ': SimpleMod'. This means ModEntry is a subclass (child) of the superclass SimpleMod (parent). This is help us use Nickel's functions more easily! */
+ * Notice the ': SimpleMod'. This means ModEntry is a subclass (child) of the superclass SimpleMod (parent) from Nickel. This will help us use Nickel's functions more easily! */
 public sealed class ModEntry : SimpleMod
 {
     internal static ModEntry Instance { get; private set; } = null!;
+    internal IKokoroApi KokoroApi { get; }
     internal ILocalizationProvider<IReadOnlyList<string>> AnyLocalizations { get; }
     internal ILocaleBoundNonNullLocalizationProvider<IReadOnlyList<string>> Localizations { get; }
 
+    /* Woah! what's with the block of code right out the gate???
+     * These are our manually declared stuff, isn't it neat?
+     * Let's continue down, and you'll start getting a hang of how we utilize these */
     internal ISpriteEntry DemoMod_Character_CardBackground { get; }
     internal ISpriteEntry DemoMod_Character_CardFrame { get; }
     internal ISpriteEntry DemoMod_Character_Panel { get; }
@@ -35,6 +39,7 @@ public sealed class ModEntry : SimpleMod
     internal ISpriteEntry DemoMod_Character_Squint_3 { get; }
     internal IDeckEntry DemoMod_Deck { get; }
     internal IShipEntry DemoMod_Ship { get; }
+    internal IStatusEntry TempShieldNextTurn { get; }
     internal static IReadOnlyList<Type> DemoCharacter_StarterCard_Types { get; } = [
         /* Add more starter cards here if you'd like. */
         typeof(DemoCardFoxTale),
@@ -71,37 +76,44 @@ public sealed class ModEntry : SimpleMod
     {
         Instance = this;
 
+        /* We use Kokoro to handle our statuses. This means Kokoro is a Dependency, and our mod will fail to work without it.
+         * We take from Kokoro what we need and put in our own project. Head to ExternalAPI/StatusLogicHook.cs if you're interested in what, exactly, we use.
+         * If you're interested in more fancy stuff, make sure to peek at the Kokoro repository found online. */
+        KokoroApi = helper.ModRegistry.GetApi<IKokoroApi>("Shockah.Kokoro")!;
+
         /* These localizations lists help us organize our mod's text and messages by language.
          * For general use, prefer AnyLocalizations, as that will provide an easier time to potential localization submods that are made for your mod 
          * IMPORTANT: These localizations are found in the i18n folder (short for internationalization). The Demo Mod comes with a barebones en.json localization file that you might want to check out before continuing 
-         * Whenever you add a card, artifact, character, ship, pretty much whatever, you will want to update your locale file in i18n with the necessary information */
-        this.AnyLocalizations = new JsonLocalizationProvider(
+         * Whenever you add a card, artifact, character, ship, pretty much whatever, you will want to update your locale file in i18n with the necessary information
+         * Example: You added your own character, you will want to create an appropiate entry in the i18n file. 
+         * If you would rather use simple strings whenever possible, that's also an option -you do you. */
+        AnyLocalizations = new JsonLocalizationProvider(
             tokenExtractor: new SimpleLocalizationTokenExtractor(),
             localeStreamFunction: locale => package.PackageRoot.GetRelativeFile($"i18n/{locale}.json").OpenRead()
         );
-        this.Localizations = new MissingPlaceholderLocalizationProvider<IReadOnlyList<string>>(
-            new CurrentLocaleOrEnglishLocalizationProvider<IReadOnlyList<string>>(this.AnyLocalizations)
+        Localizations = new MissingPlaceholderLocalizationProvider<IReadOnlyList<string>>(
+            new CurrentLocaleOrEnglishLocalizationProvider<IReadOnlyList<string>>(AnyLocalizations)
         );
 
         /* Assigning our ISpriteEntry objects manually. This is the easiest way to do it when starting out!
          * Of note: GetRelativeFile is case sensitive. Double check you've written the file names correctly */
-        DemoMod_Character_CardBackground = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_cardbackground.png"));
-        DemoMod_Character_CardFrame = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_cardframe.png"));
-        DemoMod_Character_Panel = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_panel.png"));
-        DemoMod_Character_Neutral_0 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_0.png"));
-        DemoMod_Character_Neutral_1 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_1.png"));
-        DemoMod_Character_Neutral_2 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_2.png"));
-        DemoMod_Character_Neutral_3 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_3.png"));
-        DemoMod_Character_Neutral_4 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_4.png"));
-        DemoMod_Character_Mini_0 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_mini_0.png"));
-        DemoMod_Character_Squint_0 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_0.png"));
-        DemoMod_Character_Squint_1 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_1.png"));
-        DemoMod_Character_Squint_2 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_2.png"));
-        DemoMod_Character_Squint_3 = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_3.png"));
+        DemoMod_Character_CardBackground = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_cardbackground.png"));
+        DemoMod_Character_CardFrame = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_cardframe.png"));
+        DemoMod_Character_Panel = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_panel.png"));
+        DemoMod_Character_Neutral_0 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_0.png"));
+        DemoMod_Character_Neutral_1 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_1.png"));
+        DemoMod_Character_Neutral_2 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_2.png"));
+        DemoMod_Character_Neutral_3 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_3.png"));
+        DemoMod_Character_Neutral_4 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_neutral_4.png"));
+        DemoMod_Character_Mini_0 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_mini_0.png"));
+        DemoMod_Character_Squint_0 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_0.png"));
+        DemoMod_Character_Squint_1 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_1.png"));
+        DemoMod_Character_Squint_2 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_2.png"));
+        DemoMod_Character_Squint_3 = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/characters/demomod_character_squint_3.png"));
 
         /* Decks are assigned separate of the character. This is because the game has decks like Trash which is not related to a playable character
          * Do note that Color accepts a HEX string format (like Color("a1b2c3")) or a Float RGB format (like Color(0.63, 0.7, 0.76). It does NOT allow a traditional RGB format (Meaning Color(161, 178, 195) will NOT work) */
-        DemoMod_Deck = Helper.Content.Decks.RegisterDeck("DemoDeck", new DeckConfiguration()
+        DemoMod_Deck = helper.Content.Decks.RegisterDeck("DemoDeck", new DeckConfiguration()
         {
             Definition = new DeckDef()
             {
@@ -115,43 +127,30 @@ public sealed class ModEntry : SimpleMod
                  * Make sure it has a good contrast against the CardFrame, and take rarity 'shine' into account as well */
                 titleColor = new Color("000000")
             },
+            /* We give it a default art and border some Sprite types by adding '.Sprite' at the end of the ISpriteEntry definitions we made above. */
             DefaultCardArt = DemoMod_Character_CardBackground.Sprite,
             BorderSprite = DemoMod_Character_CardFrame.Sprite,
 
             /* Since this deck will be used by our Demo Character, we'll use their name. */
-            Name = this.AnyLocalizations.Bind(["character", "DemoCharacter", "name"]).Localize,
-        });
-
-        /*Of Note: You may notice we aren't assigning these ICharacterEntry and ICharacterAnimationEntry to any object, unlike stuff above,
-        * It's totally fine to assign them, if you'd like, but we don't have a reason to in this mod */
-        Helper.Content.Characters.RegisterCharacter("DemoCharacter", new CharacterConfiguration()
-        {
-            /* What we registered above was an IDeckEntry object, but when you register a character the Helper will ask for you to provide its Deck 'id'
-             * This is simple enough, as you can get it from DemoMod_Deck */
-            Deck = DemoMod_Deck.Deck,
-
-            /* The Starter Card Types are, as the name implies, the cards you will start a DemoCharacter run with. 
-             * You could provide vanilla cards if you want, but it's way more fun to create your own cards! */
-            StarterCardTypes = DemoCharacter_StarterCard_Types,
-
-            /* This is the little blurb that appears when you hover over the character in-game.
-             * You can make it fluff, use it as a way to tell players about the character's playstyle, or a little bit of both! */
-            Description = this.AnyLocalizations.Bind(["character", "DemoCharacter", "description"]).Localize,
-
-            /* This is the fancy panel that encapsulates your character while in active combat.
-             * It's recommended that it follows the same color scheme as the character and deck, for cohesion */
-            BorderSprite = DemoMod_Character_Panel.Sprite
+            Name = AnyLocalizations.Bind(["character", "DemoCharacter", "name"]).Localize,
         });
 
         /* Let's create some animations, because if you were to boot up this mod from what you have above,
-         * DemoCharacter would be a blank void inside a box, we haven't added their sprites yet! */
-        Helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
+         * DemoCharacter would be a blank void inside a box, we haven't added their sprites yet! 
+         * We first begin by registering the animations. I know, weird. 'Why are we making animations when we still haven't made the character itself', stick with me, okay? 
+         * Animations are actually assigned to Deck types, not Characters! */
+
+        /*Of Note: You may notice we aren't assigning these ICharacterAnimationEntry and ICharacterEntry to any object, unlike stuff above,
+        * It's totally fine to assign them if you'd like, but we don't have a reason to so in this mod */
+        helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
         {
-            /* Characters themselves aren't used that much by the code itself, most of the time we care about having the character's deck at hand */
+            /* What we registered above was an IDeckEntry object, but when you register a character animation the Helper will ask for you to provide its Deck 'id'
+             * This is simple enough, as you can get it from DemoMod_Deck */
             Deck = DemoMod_Deck.Deck,
 
             /* The Looptag is the 'name' of the animation. When making shouts and events, and you want your character to show emotions, the LoopTag is what you want
-             * In vanilla Cobalt Core, there are 3 'animations' looptags that any character should have: "neutral", "mini" and "squint", as these are used in: Neutral is used as default, mini is used in character select and out-of-combat UI, and Squink is hardcoded used in certain events */
+             * In vanilla Cobalt Core, there are 4 'animations' looptags that any character should have: "neutral", "mini", "squint" and "gameover",
+             * as these are used in: Neutral is used as default, mini is used in character select and out-of-combat UI, Squink is hardcoded used in certain events, and Gameover is used when your run ends */
             LoopTag = "neutral",
 
             /* The game doesn't use frames properly when there are only 2 or 3 frames. If you want a proper animation, avoid only adding 2 or 3 frames to it */
@@ -164,7 +163,7 @@ public sealed class ModEntry : SimpleMod
                 DemoMod_Character_Neutral_4.Sprite
             }
         });
-        Helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
+        helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
         {
             Deck = DemoMod_Deck.Deck,
             LoopTag = "mini",
@@ -174,7 +173,7 @@ public sealed class ModEntry : SimpleMod
                 DemoMod_Character_Mini_0.Sprite
             }
         });
-        Helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
+        helper.Content.Characters.RegisterCharacterAnimation(new CharacterAnimationConfiguration()
         {
             Deck = DemoMod_Deck.Deck,
             LoopTag = "squint",
@@ -187,11 +186,34 @@ public sealed class ModEntry : SimpleMod
             }
         });
 
+        /* Wait, so if we want 'gameover', why doesn't this demo come with the registration for it?
+         * Answer: You should be able to use the knowledge you have earned so far to register your own animations! If you'd like, try making the 'gameover' registration code here. You can use whatever sprite you want */
+        
+        /* Let's continue with the character creation and finally, actually, register the character! */
+        helper.Content.Characters.RegisterCharacter("DemoCharacter", new CharacterConfiguration()
+        {
+            /* Same as animations, we want to provide the appropiate Deck type */
+            Deck = DemoMod_Deck.Deck,
+
+            /* The Starter Card Types are, as the name implies, the cards you will start a DemoCharacter run with. 
+             * You could provide vanilla cards if you want, but it's way more fun to create your own cards! */
+            StarterCardTypes = DemoCharacter_StarterCard_Types,
+
+            /* This is the little blurb that appears when you hover over the character in-game.
+             * You can make it fluff, use it as a way to tell players about the character's playstyle, or a little bit of both! */
+            Description = AnyLocalizations.Bind(["character", "DemoCharacter", "description"]).Localize,
+
+            /* This is the fancy panel that encapsulates your character while in active combat.
+             * It's recommended that it follows the same color scheme as the character and deck, for cohesion */
+            BorderSprite = DemoMod_Character_Panel.Sprite
+        });
+
         /* The basics for a Character mod are done!
          * But you may still have mechanics you want to tackle, such as,
          * 1. How to make cards
          * 2. How to make artifacts
-         * 3. How to make ships */
+         * 3. How to make ships
+         * 4. How to make statuses */
 
         /* 1. CARDS
          * DemoMod comes with a neat folder called Cards where all the .cs files for our cards are stored. Take a look.
@@ -200,7 +222,8 @@ public sealed class ModEntry : SimpleMod
 
         /* Here we register our cards so we can find them in game.
          * Notice the IDemoCard interface, you can find it in InternalInterfaces.cs
-         * Each card in the IEnumerable 'DemoMod_AllCard_Types' will be asked to run their 'Register' method. Open a card's .cs file, and see what it does */
+         * Each card in the IEnumerable 'DemoMod_AllCard_Types' will be asked to run their 'Register' method. Open a card's .cs file, and see what it does 
+         * We *can* instead register characts one by one, like what we did with the sprites. If you'd like an example of what that looks like, check out the Randall mod by Arin! */
         foreach (var cardType in DemoMod_AllCard_Types)
             AccessTools.DeclaredMethod(cardType, nameof(IDemoCard.Register))?.Invoke(null, [helper]);
 
@@ -218,26 +241,26 @@ public sealed class ModEntry : SimpleMod
 
         /* Let's start with registering the ship parts, so we don't have to do it while making the ship proper
          * You may notice these assets are copies of the vanilla parts. Don't worry, you can get wild with your own designs! */
-        var demoShipPartWing = Helper.Content.Ships.RegisterPart("DemoPart.Wing", new PartConfiguration()
+        var demoShipPartWing = helper.Content.Ships.RegisterPart("DemoPart.Wing", new PartConfiguration()
         {
-            Sprite = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demowing.png")).Sprite
+            Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demowing.png")).Sprite
         });
-        var demoShipPartCannon = Helper.Content.Ships.RegisterPart("DemoPart.Cannon", new PartConfiguration()
+        var demoShipPartCannon = helper.Content.Ships.RegisterPart("DemoPart.Cannon", new PartConfiguration()
         {
-            Sprite = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/democannon.png")).Sprite
+            Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/democannon.png")).Sprite
         });
-        var demoShipPartMissiles = Helper.Content.Ships.RegisterPart("DemoPart.Missiles", new PartConfiguration()
+        var demoShipPartMissiles = helper.Content.Ships.RegisterPart("DemoPart.Missiles", new PartConfiguration()
         {
-            Sprite = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demomissiles.png")).Sprite
+            Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demomissiles.png")).Sprite
         });
-        var demoShipPartCockpit = Helper.Content.Ships.RegisterPart("DemoPart.Cockpit", new PartConfiguration()
+        var demoShipPartCockpit = helper.Content.Ships.RegisterPart("DemoPart.Cockpit", new PartConfiguration()
         {
-            Sprite = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/democockpit.png")).Sprite
+            Sprite = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/democockpit.png")).Sprite
         });
-        var demoShipSpriteChassis = Helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demochassis.png")).Sprite;
+        var demoShipSpriteChassis = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/ships/demochassis.png")).Sprite;
 
         /* With the parts and sprites done, we can now create our Ship a bit more easily */
-        DemoMod_Ship = Helper.Content.Ships.RegisterShip("DemoShip", new ShipConfiguration()
+        DemoMod_Ship = helper.Content.Ships.RegisterShip("DemoShip", new ShipConfiguration()
         {
             Ship = new StarterShip()
             {
@@ -253,8 +276,7 @@ public sealed class ModEntry : SimpleMod
                         new Part
                         {
                             type = PType.wing,
-                            skin = demoShipPartWing.UniqueName,
-                            damageModifier = PDamMod.none
+                            skin = demoShipPartWing.UniqueName
                         },
                         new Part
                         {
@@ -309,9 +331,27 @@ public sealed class ModEntry : SimpleMod
             },
 
             UnderChassisSprite = demoShipSpriteChassis,
-            Name = this.AnyLocalizations.Bind(["ship", "DemoShip", "name"]).Localize,
-            Description = this.AnyLocalizations.Bind(["ship", "DemoShip", "description"]).Localize,
-
+            Name = AnyLocalizations.Bind(["ship", "DemoShip", "name"]).Localize,
+            Description = AnyLocalizations.Bind(["ship", "DemoShip", "description"]).Localize
         });
+
+        /* 4. STATUSES
+         * You might, now, with all this code behind our backs, start recognizing patterns in the way we can register stuff. */
+        TempShieldNextTurn = helper.Content.Statuses.RegisterStatus("TempShieldNextTurn", new()
+        {
+            Definition = new()
+            {
+                /* We provide the icon as a Sprite type, you can find it in the given file location */
+                icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/icons/tempShieldNextTurn.png")).Sprite,
+                /* We give it a color, this is the border color that surrounds the status icon & number in-game */
+                color = new("b500be"),
+                /* We define if it's isGood = true or isGood = false. This will dictate if the number will be either blue or red */
+                isGood = true
+            },
+            Name = AnyLocalizations.Bind(["status", "TempShieldNextTurn", "name"]).Localize,
+            Description = AnyLocalizations.Bind(["status", "TempShieldNextTurn", "description"]).Localize
+        });
+        /* Check this out in Features/TempShieldNextTurn.cs */
+        _ = new TempShieldNextTurnManager();
     }
 }

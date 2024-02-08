@@ -6,9 +6,6 @@ using System.Reflection;
  * However it's recommended that you follow the structure defined by ModEntry of <AuthorName>.<ModName> or <AuthorName>.<ModName>.Cards*/
 namespace AuthorName.DemoMod.Cards;
 
-/* The Card's class name IS IMPORTANT, however. This is what the game will ask for when trying to get a card.
- * If your card's class shares the same name as a vanilla card, or shares it with a modded card, the game can't keep both, and will only use one
- * For this reason, we recommend to give a unique name that is unlikely to be repeated by others, such as incorporating AuthorName or ModName to it */
 internal sealed class DemoCardFoxTale : Card, IDemoCard
 {
     /* For a bit more info on the Register Method, look at InternalInterfaces.cs and 1. CARDS section in ModEntry */
@@ -28,7 +25,7 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
                 /* Some vanilla cards don't upgrade, some only upgrade to A, but most upgrade to either A or B */
                 upgradesTo = [Upgrade.A, Upgrade.B]
             },
-            /* AnyLocalizations.Bind().Localize will find the 'name' of 'Foxtale' in the locale file and feed it here. The output for english in-game from this is 'Fox Tale' */
+            /* AnyLocalizations.Bind().Localize will find the 'name' of 'Foxtale' in 'card', in the locale file, and feed it here. The output for english in-game from this is 'Fox Tale' */
             Name = ModEntry.Instance.AnyLocalizations.Bind(["card", "FoxTale", "name"]).Localize
         });
     }
@@ -39,7 +36,8 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
             /* Give your card some meta data, such as giving it an energy cost, making it exhaustable, and more */
             cost = 1,
 
-            /* if we don't set a card specific 'art' here, the game will give it the deck's 'DefaultCardArt' */
+            /* if we don't set a card specific 'art' (a 'Spr' type) here, the game will give it the deck's 'DefaultCardArt'
+            /* if we don't set a card specific 'description' (a 'string' type) here, the game will attempt to use iconography using the provided CardAction types from GetActions() */
         };
         return data;
     }
@@ -52,7 +50,7 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
         switch (upgrade)
         {
             case Upgrade.None:
-                List<CardAction> cardActionList1 = new List<CardAction>()
+                actions = new()
                 {
                     new AAttack()
                     {
@@ -68,10 +66,10 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
                         targetPlayer = true
                     },
                 };
-                actions = cardActionList1;
+                /* Remember to always break it up! */
                 break;
             case Upgrade.A:
-                List<CardAction> cardActionList2 = new List<CardAction>()
+                actions = new()
                 {
                     new AAttack()
                     {
@@ -85,10 +83,9 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
                         canRunAfterKill = true
                     }
                 };
-                actions = cardActionList2;
                 break;
             case Upgrade.B:
-                List<CardAction> cardActionList3 = new List<CardAction>()
+                actions = new()
                 {
                     new AAttack()
                     {
@@ -101,7 +98,6 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
                         count = 2
                     }
                 };
-                actions = cardActionList3;
                 break;
         }
         return actions;
