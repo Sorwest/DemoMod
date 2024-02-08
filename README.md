@@ -43,6 +43,7 @@ Demo Mod is a small, simple mod for Cobalt Core with basic features, created so 
 - 1 Ship
 - 2 Cards
 - 2 Artifacts
+- 1 Status
 
 
 <!-- Screenshots -->
