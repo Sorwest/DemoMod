@@ -39,7 +39,7 @@ public sealed class ModEntry : SimpleMod
     internal ISpriteEntry DemoMod_Character_Squint_3 { get; }
     internal IDeckEntry DemoMod_Deck { get; }
     internal IShipEntry DemoMod_Ship { get; }
-    internal IStatusEntry TempShieldNextTurn { get; }
+    internal IStatusEntry AutododgeLeftNextTurn { get; }
     internal static IReadOnlyList<Type> DemoCharacter_StarterCard_Types { get; } = [
         /* Add more starter cards here if you'd like. */
         typeof(DemoCardFoxTale),
@@ -337,21 +337,21 @@ public sealed class ModEntry : SimpleMod
 
         /* 4. STATUSES
          * You might, now, with all this code behind our backs, start recognizing patterns in the way we can register stuff. */
-        TempShieldNextTurn = helper.Content.Statuses.RegisterStatus("TempShieldNextTurn", new()
+        AutododgeLeftNextTurn = helper.Content.Statuses.RegisterStatus("AutododgeLeftNextTurn", new()
         {
             Definition = new()
             {
                 /* We provide the icon as a Sprite type, you can find it in the given file location */
-                icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/icons/tempShieldNextTurn.png")).Sprite,
+                icon = helper.Content.Sprites.RegisterSprite(package.PackageRoot.GetRelativeFile("assets/icons/autododgeLeftNextTurn.png")).Sprite,
                 /* We give it a color, this is the border color that surrounds the status icon & number in-game */
                 color = new("b500be"),
                 /* We define if it's isGood = true or isGood = false. This will dictate if the number will be either blue or red */
                 isGood = true
             },
-            Name = AnyLocalizations.Bind(["status", "TempShieldNextTurn", "name"]).Localize,
-            Description = AnyLocalizations.Bind(["status", "TempShieldNextTurn", "description"]).Localize
+            Name = AnyLocalizations.Bind(["status", "AutododgeLeftNextTurn", "name"]).Localize,
+            Description = AnyLocalizations.Bind(["status", "AutododgeLeftNextTurn", "description"]).Localize
         });
-        /* Check this out in Features/TempShieldNextTurn.cs */
-        _ = new TempShieldNextTurnManager();
+        /* Check this out in Features/AutododgeLeftNextTurn.cs */
+        _ = new AutododgeLeftNextTurnManager();
     }
 }

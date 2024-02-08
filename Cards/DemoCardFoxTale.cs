@@ -89,9 +89,12 @@ internal sealed class DemoCardFoxTale : Card, IDemoCard
                 {
                     new AAttack()
                     {
-                        damage = GetDmg(s, 1),
+                        damage = GetDmg(s, 5),
                         /* AAttacks can have flags indicating some extra effect. In this case, stunEnemy = true will stun the ship part hit. */
-                        stunEnemy = true
+                        stunEnemy = true,
+                        /* We can also give it our modded statuses, by getting it from our own code */
+                        status = ModEntry.Instance.AutododgeLeftNextTurn.Status,
+                        statusAmount = 1
                     },
                     new ADrawCard()
                     {

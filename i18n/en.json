@@ -35,9 +35,9 @@
     }
   },
   "status": {
-    "TempShieldNextTurn": {
-      "name": "Temp Shield Next Turn",
-      "description": "At the start of next turn, gain <c=boldPink>{0}</c> <c=status>TEMP SHIELD</c>."
+    "AutododgeLeftNextTurn": {
+      "name": "Autododge Left Next Turn",
+      "description": "At the start of next turn, gain <c=boldPink>{0}</c> <c=status>AUTODODGE LEFT</c>."
     }
   }
 }
